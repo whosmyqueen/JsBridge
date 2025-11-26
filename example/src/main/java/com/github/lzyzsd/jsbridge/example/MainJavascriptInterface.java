@@ -5,6 +5,7 @@ import android.webkit.JavascriptInterface;
 
 import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.github.lzyzsd.jsbridge.OnBridgeCallback;
+import com.github.lzyzsd.jsbridge.WebViewJavascriptBridge;
 
 import java.util.Map;
 
@@ -15,10 +16,16 @@ import java.util.Map;
  */
 public class MainJavascriptInterface extends BridgeWebView.BaseJavascriptInterface {
 
-    private BridgeWebView mWebView;
+    //WebJSbridge
+    private WebViewJavascriptBridge mWebView;
 
-    public MainJavascriptInterface(Map<String, OnBridgeCallback> callbacks, BridgeWebView webView) {
+    public MainJavascriptInterface(Map<String, OnBridgeCallback> callbacks, WebViewJavascriptBridge webView) {
         super(callbacks);
+        mWebView = webView;
+    }
+
+    public MainJavascriptInterface(Map<String, OnBridgeCallback> callbacks, Map<String, OnBridgeCallback> persistentCallbacks, WebViewJavascriptBridge webView) {
+        super(callbacks, persistentCallbacks);
         mWebView = webView;
     }
 
@@ -35,6 +42,6 @@ public class MainJavascriptInterface extends BridgeWebView.BaseJavascriptInterfa
     @JavascriptInterface
     public void submitFromWeb(String data, String callbackId) {
         Log.d("MainJavascriptInterface", data + ", callbackId: " + callbackId + " " + Thread.currentThread().getName());
-        mWebView.sendResponse("submitFromWeb response", callbackId);
+        mWebView.responseFromWeb("submitFromWeb response", callbackId);
     }
 }
